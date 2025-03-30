@@ -1,0 +1,37 @@
+#include <Servo.h>
+
+Servo myServo;
+int button = 0;
+int trigPin = 8;
+int echoPin = 9;
+int servoPin = 13;
+float duration = 0.0;
+float distance = 0.0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  myServo.attach(servoPin);
+  pinMode(2, INPUT);
+}
+
+void loop() {
+  button = digitalRead(2);
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2;
+  if(button == HIGH || distance >= 20) {
+    myServo.write(0);
+  }else if(distance <= 20){
+    myServo.write(180);
+  }
+}
+
+The problem is servo motor is moving really slow.
+https://www.tinkercad.com/things/iQdr3si4Bw8-hand?sharecode=bJTqxrZzREVV0m01Gi-jbjA48kWiN7XvqxVdbnITBxs
